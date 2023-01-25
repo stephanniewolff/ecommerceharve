@@ -1,4 +1,29 @@
-<?php include('include/header.php'); ?>
+
+<?php 
+    include_once('include/header.php'); 
+
+    $productName = null;
+
+    if (isset($_GET['id']) && $_GET['id'] != "") {
+        include_once('include/connection.php');
+
+        $query = "
+            SELECT
+                *
+            FROM
+                products
+            WHERE
+                id = :productId    
+            ";
+    
+        $sql = $pdo->prepare($query);
+        $sql->bindValue(":productId", $_GET['id'], PDO::PARAM_INT);
+        $sql->execute();
+        $resultArray = $sql->fetch(PDO::FETCH_ASSOC);
+
+        $productName = $resultArray['name'];
+    }
+?>
     <div class="container">
         <form action="save_product.php" method="POST" enctype="multipart/form-data">
             <div class="card">
