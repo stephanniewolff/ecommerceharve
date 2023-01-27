@@ -9,6 +9,8 @@
                 *
             FROM
                 products
+            WHERE
+                deleted_at is NULL
             ORDER BY
                 id desc
     ";
@@ -22,6 +24,7 @@
     <table class = "table table-striped">
         <thead>
             <tr>
+                <th>ID</th>
                 <th>Nome</th>
                 <th>SKU</th>
                 <th>Preço</th>
@@ -43,11 +46,13 @@
                 for($i = 0; $i < count($resultArray); $i++) {
                     echo "
                     <tr>
+                        <td>" . $resultArray[$i]['id'] . "</td>
                         <td>" . $resultArray[$i]['name'] . "</td>
                         <td>" . $resultArray[$i]['sku'] . "</td>
                         <td> R$ ". number_format($resultArray[$i]['price'],2 , ',', '.') . "</td>
                         <td> 
                             <a class = 'btn btn-warning' href='form_product.php?id=" . $resultArray[$i]['id'] . "'> Editar </a>
+                            <a class = 'btn btn-danger' href='delete_product.php?id=" . $resultArray[$i]['id'] . "'> Deletar </a>
                         </td>
                     </tr>";
                 }

@@ -7,15 +7,20 @@
         $productNickName = $_POST['productNickName'] ?? null;
         $productPrice = $_POST['productPrice'] ?? null;
         $productSku = $_POST['productSku'] ?? null;
+        $productId = $_GET['id'];
 
         include_once('include/connection.php');
 
         $query = "
-        INSERT INTO 
-            products 
-                (name, nickname, sku, price) 
-        VALUES 
-            (:name, :nickname, :sku, :price)
+            UPDATE
+                products
+            SET
+                name = :name,
+                nickname = :nickname,
+                price = :price,
+                sku = :sku
+            WHERE
+                id = :productId
         ";
         
         $sql = $pdo->prepare($query);
@@ -23,6 +28,7 @@
         $sql->bindValue(":nickname", $productNickName, PDO::PARAM_STR);
         $sql->bindValue(":sku", $productSku, PDO::PARAM_STR);
         $sql->bindValue(":price", $productPrice, PDO::PARAM_INT);
+        $sql->bindValue(":productId", $productId, PDO::PARAM_INT);
 
         $sql->execute();
     }
